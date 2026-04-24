@@ -56,15 +56,35 @@ export const students: Student[] = [
  *
  */
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    //throw new Error("Cus Error By Me")
+    //throw new Error("Cus Error By Me");//Testing purpose
+
+    //Reading query params
+    const searchParams = request.nextUrl.searchParams;
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "3"); //limit = Page Size
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    const paginatedStudents = students?.slice(startIndex, endIndex);
+    const totalPages = students?.length / limit;
+
     return NextResponse.json(
       {
         status: "success",
         data: {
-          students,
+          students: paginatedStudents,
           total: students?.length,
+          pagination: {
+            totalStudents: students?.length,
+            totalPages,
+            currentPage: page,
+            limit,
+            hasNextPage: page < totalPages,
+            hasPrevPage: page > 1,
+          },
         },
       },
       { status: 200 },
