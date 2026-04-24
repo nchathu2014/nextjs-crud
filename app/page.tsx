@@ -6,9 +6,13 @@ export type Student = {
   subject: string;
 };
 
+const baseUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : "http://localhost:3000";
+
 export default async function Home() {
-  const res = await fetch("http://localhost:3000/api/v1/users");
-  const resData = await res.json();
+  // const res = await fetch(`${baseUrl}/api/v1/users`);
+  // const resData = await res.json();
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
@@ -27,7 +31,7 @@ export default async function Home() {
                 <th className="px-6 py-3">Score</th>
               </tr>
             </thead>
-            <tbody>
+            {/* <tbody>
               {resData.data?.students?.map((student: Student) => (
                 <tr
                   key={student?.id}
@@ -40,7 +44,7 @@ export default async function Home() {
                   <td className="px-6 py-4">{student?.score}</td>
                 </tr>
               ))}
-            </tbody>
+            </tbody> */}
           </table>
         </div>
       </div>
